@@ -3,6 +3,16 @@ Correios
 
 Várias Classes em PHP para diversos serviços dos Correios.
 
+Estrutura das pastas
+====================
+
+classes: Contém as classes necessárias para as consultas.
+
+exemplos: Contém exemplos de cada uma das consultas disponíveis.
+
+manuais: Contém os manuais oficiais dos Correios.
+
+
 Cálculo Remoto de Preço e Prazo de entrega
 ==========================================
 
@@ -28,6 +38,8 @@ Contatos
 ========
 
 Ivan Wilhelm
+
 E-mail: ivan.whm@me.com
+
 Twitter: @ivanwhm
 
