@@ -15,22 +15,11 @@
    *
    * @author Ivan Wilhelm <ivan.whm@me.com>
    * @see http://www.correios.com.br/webServices/PDF/SCPP_manual_implementacao_calculo_remoto_de_precos_e_prazos.pdf
-   * @version 1.0
+   * @version 1.1
+   * @final
    */
   final class CorreiosPrecoPrazo extends Correios
   {
-
-    /**
-     * Contém o código da empresa.
-     * @var string
-     */
-    private $codigoEmpresa;
-
-    /**
-     * Contém a senha da empresa.
-     * @var string
-     */
-    private $senhaEmpresa;
 
     /**
      * Contém o CEP de origem.
@@ -110,18 +99,6 @@
      * @var CorreiosPrecoPrazoResult[]
      */
     private $retornos = array();
-
-    /**
-     * Cria um objeto para cálculo remoto de preços e prazos.
-     * 
-     * @param string $codigoEmpresa Código da empresa.
-     * @param string $senhaEmpresa Senha da empresa.
-     */
-    public function __construct($codigoEmpresa = '', $senhaEmpresa = '')
-    {
-      $this->codigoEmpresa = $codigoEmpresa;
-      $this->senhaEmpresa = $senhaEmpresa;
-    }
 
     /**
      * Adiciona um código de serviço para realizar a consulta.
@@ -314,8 +291,8 @@
     protected function getParametros()
     {
       $parametros = array(
-        'nCdEmpresa' => (string) $this->codigoEmpresa,
-        'sDsSenha' => (string) $this->senhaEmpresa,
+        'nCdEmpresa' => (string) $this->getUsuario(),
+        'sDsSenha' => (string) $this->getSenha(),
         'nCdServico' => (string) $this->getServicos(),
         'sCepOrigem' => (string) $this->cepOrigem,
         'sCepDestino' => (string) $this->cepDestino,
@@ -332,6 +309,12 @@
       return $parametros;
     }
 
+    /**
+     * Processa a consulta e armazena o resultado.
+     * 
+     * @return boolean
+     * @throws Exception 
+     */
     public function processaConsulta()
     {
       //Ativa o uso de URL FOpen
@@ -340,7 +323,7 @@
       //Inicia transação junto a Braspag
       try
       {
-        $soap = new SoapClient(self::URL_CALCULADOR);
+        $soap = new SoapClient(parent::URL_CALCULADOR);
         $retorno = $soap->CalcPrecoPrazo($this->getParametros());
 
         if ($retorno instanceof stdClass)
