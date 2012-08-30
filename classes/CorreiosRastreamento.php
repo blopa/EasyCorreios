@@ -144,50 +144,55 @@
     {
       //Ativa o uso de URL FOpen
       ini_set("allow_url_fopen", 1);
-      //Inicia a consulta
-      $curl = curl_init();
-      curl_setopt($curl, CURLOPT_URL, parent::URL_RASTREADOR);
-      curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-      curl_setopt($curl, CURLOPT_POST, 1);
-      curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($this->getParametros()));
-      $saida = curl_exec($curl);
-      $saida = utf8_encode($saida);
-      curl_close($curl);
-      $resultado = simplexml_load_string($saida);
+      //Inicialização do retorno
       $retorno = FALSE;
-      if ($resultado instanceof SimpleXMLElement)
+      //Valida se o servidor está no ar
+      if (@fopen(parent::URL_CALCULADOR, 'r'))
       {
-        $retorno = TRUE;
-        $rastreamento = new CorreiosRastreamentoResultado();
-        $rastreamento->setVersao(isset($resultado->versao) ? (string) $resultado->versao : '');
-        $rastreamento->setQuantidade(isset($resultado->qtd) ? (int) $resultado->qtd : 0);
-        $rastreamento->setTipoPesquisa(isset($resultado->TipoPesquisa) ? (string) $resultado->TipoPesquisa : '');
-        $rastreamento->setTipoResultado(isset($resultado->TipoResultado) ? (string) $resultado->TipoResultado : '');
-        if ($rastreamento->getQuantidade() > 0 and isset($resultado->objeto))
+        //Inicia a consulta
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, parent::URL_RASTREADOR);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($this->getParametros()));
+        $saida = curl_exec($curl);
+        $saida = utf8_encode($saida);
+        curl_close($curl);
+        $resultado = simplexml_load_string($saida);
+        if ($resultado instanceof SimpleXMLElement)
         {
-          foreach ($resultado->objeto as $objetoDetalhe)
+          $retorno = TRUE;
+          $rastreamento = new CorreiosRastreamentoResultado();
+          $rastreamento->setVersao(isset($resultado->versao) ? (string) $resultado->versao : '');
+          $rastreamento->setQuantidade(isset($resultado->qtd) ? (int) $resultado->qtd : 0);
+          $rastreamento->setTipoPesquisa(isset($resultado->TipoPesquisa) ? (string) $resultado->TipoPesquisa : '');
+          $rastreamento->setTipoResultado(isset($resultado->TipoResultado) ? (string) $resultado->TipoResultado : '');
+          if ($rastreamento->getQuantidade() > 0 and isset($resultado->objeto))
           {
-            $objeto = new CorreiosRastreamentoResultadoOjeto();
-            $objeto->setObjeto(isset($objetoDetalhe->numero) ? (string) $objetoDetalhe->numero : '');
-            foreach ($objetoDetalhe->evento as $eventoObjeto)
+            foreach ($resultado->objeto as $objetoDetalhe)
             {
-              $evento = new CorreiosRastreamentoResultadoEvento();
-              $evento->setTipo(isset($eventoObjeto->tipo) ? (string) $eventoObjeto->tipo : '');
-              $evento->setStatus(isset($eventoObjeto->status) ? (string) $eventoObjeto->status : '');
-              $evento->setData(isset($eventoObjeto->data) ? (string) $eventoObjeto->data : '');
-              $evento->setHora(isset($eventoObjeto->hora) ? (string) $eventoObjeto->hora : '');
-              $evento->setDescricao(isset($eventoObjeto->descricao) ? (string) $eventoObjeto->descricao : '');
-              $evento->setComentario(isset($eventoObjeto->comentario) ? (string) $eventoObjeto->comentario : '');
-              $evento->setLocal(isset($eventoObjeto->local) ? (string) $eventoObjeto->local : '');
-              $evento->setCodigo(isset($eventoObjeto->codigo) ? (string) $eventoObjeto->codigo : '');
-              $evento->setCidade(isset($eventoObjeto->cidade) ? (string) $eventoObjeto->cidade : '');
-              $evento->setUf(isset($eventoObjeto->uf) ? (string) $eventoObjeto->uf : '');
-              $objeto->addEvento($evento);
+              $objeto = new CorreiosRastreamentoResultadoOjeto();
+              $objeto->setObjeto(isset($objetoDetalhe->numero) ? (string) $objetoDetalhe->numero : '');
+              foreach ($objetoDetalhe->evento as $eventoObjeto)
+              {
+                $evento = new CorreiosRastreamentoResultadoEvento();
+                $evento->setTipo(isset($eventoObjeto->tipo) ? (string) $eventoObjeto->tipo : '');
+                $evento->setStatus(isset($eventoObjeto->status) ? (string) $eventoObjeto->status : '');
+                $evento->setData(isset($eventoObjeto->data) ? (string) $eventoObjeto->data : '');
+                $evento->setHora(isset($eventoObjeto->hora) ? (string) $eventoObjeto->hora : '');
+                $evento->setDescricao(isset($eventoObjeto->descricao) ? (string) $eventoObjeto->descricao : '');
+                $evento->setComentario(isset($eventoObjeto->comentario) ? (string) $eventoObjeto->comentario : '');
+                $evento->setLocal(isset($eventoObjeto->local) ? (string) $eventoObjeto->local : '');
+                $evento->setCodigo(isset($eventoObjeto->codigo) ? (string) $eventoObjeto->codigo : '');
+                $evento->setCidade(isset($eventoObjeto->cidade) ? (string) $eventoObjeto->cidade : '');
+                $evento->setUf(isset($eventoObjeto->uf) ? (string) $eventoObjeto->uf : '');
+                $objeto->addEvento($evento);
+              }
+              $rastreamento->addResultado($objeto);
             }
-            $rastreamento->addResultado($objeto);
           }
+          $this->retorno = $rastreamento;
         }
-        $this->retorno = $rastreamento;
       }
       return $retorno;
     }

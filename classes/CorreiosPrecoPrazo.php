@@ -323,20 +323,24 @@
       //Inicia transação junto a Braspag
       try
       {
-        $soap = new SoapClient(parent::URL_CALCULADOR);
-        $retorno = $soap->CalcPrecoPrazo($this->getParametros());
-
-        if ($retorno instanceof stdClass)
+        if (@fopen(parent::URL_CALCULADOR, 'r'))
         {
-          $retornosConsulta = $retorno->CalcPrecoPrazoResult->Servicos->cServico;
-          if (is_array($retornosConsulta))
-            foreach ($retornosConsulta as $retornoConsulta)
-            {
-              $servico = new CorreiosPrecoPrazoResultado($retornoConsulta);
-              $this->retornos[] = $servico;
-            }
+          $soap = new SoapClient(parent::URL_CALCULADOR);
+          $retorno = $soap->CalcPrecoPrazo($this->getParametros());
 
-          return TRUE;
+          if ($retorno instanceof stdClass)
+          {
+            $retornosConsulta = $retorno->CalcPrecoPrazoResult->Servicos->cServico;
+            if (is_array($retornosConsulta))
+              foreach ($retornosConsulta as $retornoConsulta)
+              {
+                $servico = new CorreiosPrecoPrazoResultado($retornoConsulta);
+                $this->retornos[] = $servico;
+              }
+
+            return TRUE;
+          } else
+            return FALSE;
         } else
           return FALSE;
       } catch (SoapFault $sf)
