@@ -332,12 +332,17 @@
           {
             $retornosConsulta = $retorno->CalcPrecoPrazoResult->Servicos->cServico;
             if (is_array($retornosConsulta))
+            {
               foreach ($retornosConsulta as $retornoConsulta)
               {
                 $servico = new CorreiosPrecoPrazoResultado($retornoConsulta);
                 $this->retornos[] = $servico;
               }
-
+            } else if ($retornosConsulta instanceof stdClass)
+            {
+              $servico = new CorreiosPrecoPrazoResultado($retornosConsulta);
+              $this->retornos[] = $servico;
+            }
             return TRUE;
           } else
             return FALSE;
