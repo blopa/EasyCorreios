@@ -22,10 +22,11 @@
     $calculo = new CorreiosPrecoPrazo();
     //Envia os parâmetros
     $calculo->setCepOrigem('89050100');
-    $calculo->setCepDestino('05532020');
+    $calculo->setCepDestino('89130000');
     $calculo->addServico(Correios::SERVICO_SEDEX_SEM_CONTRATO);
     $calculo->addServico(Correios::SERVICO_PAC_SEM_CONTRATO);
     $calculo->addServico(Correios::SERVICO_SEDEX_10_SEM_CONTRATO);
+    $calculo->addServico(Correios::SERVICO_ESEDEX_COM_CONTRATO);
     $calculo->setFormato(Correios::FORMATO_CAIXA_PACOTE);
     $calculo->setPeso(29.56);
     $calculo->setValorDeclarado(9637.89);
