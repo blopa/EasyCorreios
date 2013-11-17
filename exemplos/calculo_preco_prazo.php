@@ -7,7 +7,6 @@
    * @author Ivan Wilhelm <ivan.whm@me.com>
    * @version 1.0 
    */
-  
   //Ajusta a codificação e o tipo do conteúdo
   header('Content-type: text/txt; charset=utf-8');
 
@@ -56,12 +55,15 @@
           echo 'Valor do serviço aviso de recebimento..: R$ ' . number_format($retorno->getValorAvisoRecebimento(), 2, ',', '.') . PHP_EOL;
           echo 'Valor do serviço valor declarado.......: R$ ' . number_format($retorno->getValorValorDeclarado(), 2, ',', '.') . PHP_EOL . PHP_EOL;
         } else
+        {
           echo 'Ocorreu um erro no cálculo do serviço ' . $retorno->getCodigo() . ': ' . $retorno->getMensagemErro() . PHP_EOL . PHP_EOL;
+        }
       }
     } else
+    {
       echo 'Ocorreu um erro, tente novamente mais tarde.' . PHP_EOL;
+    }
   } catch (Exception $e)
   {
     echo 'Ocorreu um erro ao processar sua solicitação. Erro: ' . $e->getMessage() . PHP_EOL;
   }
-?>

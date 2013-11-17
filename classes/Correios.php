@@ -211,5 +211,4 @@
      */
     abstract public function processaConsulta();
   }
-
-?>
+  

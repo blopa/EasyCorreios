@@ -56,6 +56,15 @@ afim de manter um histórico.
 A versão atual destas classes está trabalhando com a versão 1.5 do webservice
 dos Correios.
 
+
+Validação/Identificação/Geração de dígito verificador de códigos de rastreio (SRO)
+==================================================================================
+
+Conjunto de funções responsável por validar, identificar os parâmetros e gerar dígito de validação
+de código de rastreamento (ou número de objeto) SRO dos Correios. Pode ser útil quando se deseja obter
+informações a respeito de um objeto ou para entrada de dados externas em seus sistemas.
+
+
 Contatos
 ========
 
@@ -65,3 +74,4 @@ E-mail: ivan.whm@me.com
 
 Twitter: @ivanwhm
 
+Skype: ivan.whm

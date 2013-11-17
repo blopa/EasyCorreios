@@ -62,9 +62,12 @@
     public function setTipo($tipo)
     {
       if (in_array($tipo, parent::$tiposRastreamento))
+      {
         $this->tipo = $tipo;
-      else
+      } else
+      {
         throw new Exception('Tipo de rastreamento inválido.');
+      }
     }
 
     /**
@@ -76,9 +79,12 @@
     public function setResultado($resultado)
     {
       if (in_array($resultado, parent::$resultadosRastreamento))
+      {
         $this->resultado = $resultado;
-      else
+      } else
+      {
         throw new Exception('Resultado de rastreamento inválido.');
+      }
     }
 
     /**
@@ -90,9 +96,12 @@
     public function addObjeto($objeto)
     {
       if (strlen($objeto) == 13)
+      {
         $this->objetos[] = $objeto;
-      else
+      } else
+      {
         throw new Exception('Objeto inválido.');
+      }
     }
 
     /**
@@ -155,8 +164,8 @@
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($this->getParametros()));
-        $saida = curl_exec($curl);
-        $saida = utf8_encode($saida);
+        $result = curl_exec($curl);
+        $saida = utf8_encode($result);
         curl_close($curl);
         $resultado = simplexml_load_string($saida);
         if ($resultado instanceof SimpleXMLElement)
@@ -198,5 +207,4 @@
     }
 
   }
-
-?>
+  

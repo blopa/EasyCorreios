@@ -46,11 +46,11 @@
           }
         }
       }
-    }
-    else
+    } else
+    {
       echo 'Nenhum rastreamento encontrado.';
+    }
   } catch (Exception $e)
   {
     echo 'Ocorreu um erro ao processar sua solicitação. Erro: ' . $e->getMessage() . PHP_EOL;
   }
-?>

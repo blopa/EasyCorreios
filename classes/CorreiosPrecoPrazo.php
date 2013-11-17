@@ -109,9 +109,12 @@
     public function addServico($codigoServico)
     {
       if (in_array($codigoServico, parent::$servicos))
+      {
         $this->servicosConsulta[] = $codigoServico;
-      else
+      } else
+      {
         throw new Exception('Código de servico inválido.');
+      }
     }
 
     /**
@@ -144,9 +147,12 @@
     public function setPeso($peso)
     {
       if (is_float($peso))
+      {
         $this->peso = $peso;
-      else
+      } else
+      {
         throw new Exception('Peso inválido.');
+      }
     }
 
     /**
@@ -158,9 +164,12 @@
     public function setFormato($formato)
     {
       if (in_array($formato, parent::$formatos))
+      {
         $this->formato = $formato;
-      else
+      } else
+      {
         throw new Exception('Formato inválido.');
+      }
     }
 
     /**
@@ -172,9 +181,12 @@
     public function setComprimento($comprimento)
     {
       if (is_float($comprimento))
+      {
         $this->comprimento = $comprimento;
-      else
+      } else
+      {
         throw new Exception('Comprimento inválido.');
+      }
     }
 
     /**
@@ -186,9 +198,12 @@
     public function setAltura($altura)
     {
       if (is_float($altura))
+      {
         $this->altura = $altura;
-      else
+      } else
+      {
         throw new Exception('Altura inválida.');
+      }
     }
 
     /**
@@ -200,9 +215,12 @@
     public function setLargura($largura)
     {
       if (is_float($largura))
+      {
         $this->largura = $largura;
-      else
+      } else
+      {
         throw new Exception('Largura inválida.');
+      }
     }
 
     /**
@@ -214,9 +232,12 @@
     public function setDiametro($diametro)
     {
       if (is_float($diametro))
+      {
         $this->diametro = $diametro;
-      else
+      } else
+      {
         throw new Exception('Diâmetro inválido.');
+      }
     }
 
     /**
@@ -228,9 +249,12 @@
     public function hasMaoPropria($maoPropria)
     {
       if (is_bool($maoPropria))
+      {
         $this->maoPropria = $maoPropria;
-      else
+      } else
+      {
         throw new Exception('Mão própria inválida.');
+      }
     }
 
     /**
@@ -243,9 +267,12 @@
     public function setValorDeclarado($valorDeclarado)
     {
       if (is_float($valorDeclarado))
+      {
         $this->valorDeclarado = $valorDeclarado;
-      else
+      } else
+      {
         throw new Exception('Valor declarado inválido.');
+      }
     }
 
     /**
@@ -257,9 +284,12 @@
     public function hasAvisoRecebimento($avisoRecebimento)
     {
       if (is_bool($avisoRecebimento))
+      {
         $this->avisoRecebimento = $avisoRecebimento;
-      else
+      } else
+      {
         throw new Exception('Aviso de recebimento inválido.');
+      }
     }
 
     /**
@@ -345,9 +375,13 @@
             }
             return TRUE;
           } else
+          {
             return FALSE;
+          }
         } else
+        {
           return FALSE;
+        }
       } catch (SoapFault $sf)
       {
         throw new Exception($sf->getMessage());
@@ -355,5 +389,4 @@
     }
 
   }
-
-?>
+  
