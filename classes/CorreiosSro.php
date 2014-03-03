@@ -1,6 +1,14 @@
 <?php
 
-  class CorreiosSro
+  /**
+   * Classe base para para a validação e geração de dígito verificador
+   * de SRO dos Correios.
+   * 
+   * @author Ivan Wilhelm <ivan.whm@me.com>
+   * @version 1.0
+   * @abstract
+   */
+  abstract class CorreiosSro
   {
 
     /**
@@ -10,7 +18,7 @@
      * @see http://www.correios.com.br/servicos/rastreamento/internacional/siglas.cfm
      * @var array
      */
-    private static $siglasComDescricao = array(
+    protected static $siglasComDescricao = array(
       'AL' => 'AGENTES DE LEITURA',
       'AR' => 'AVISO DE RECEBIMENTO',
       'AS' => 'ENCOMENDA PAC – AÇÃO SOCIAL',
@@ -253,30 +261,6 @@
             $retorno = 11 - ($soma % 11);
             break;
         }
-      }
-      //Retorna
-      return $retorno;
-    }
-
-    /**
-     * Retorna os dados de um SRO.
-     * @param string $sro SRO para obter os dados
-     * @return string 
-     */
-    public static function retornaDadosSro($sro)
-    {
-      //Inicializador 
-      $retorno = '';
-      //Se validar o SRO
-      if (self::validaSro($sro))
-      {
-        $retorno .= 'Tipo da encomenda..: ' . self::$siglasComDescricao[substr($sro, 0, 2)] . PHP_EOL;
-        $retorno .= 'Código de rastreio.: ' . substr($sro, 2, 8) . PHP_EOL;
-        $retorno .= 'Dígito verificador.: ' . substr($sro, 10, 1) . PHP_EOL;
-        $retorno .= 'País de origem.....: ' . substr($sro, 11, 2) . PHP_EOL;
-      } else
-      {
-        $retorno .= 'SRO inválido.' . PHP_EOL;
       }
       //Retorna
       return $retorno;

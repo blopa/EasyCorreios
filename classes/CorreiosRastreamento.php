@@ -17,7 +17,7 @@
    *
    * @author Ivan Wilhelm <ivan.whm@me.com>
    * @see http://blog.correios.com.br/comercioeletronico/wp-content/uploads/2011/10/Guia-Tecnico-Rastreamento-XML-Cliente-Vers%C3%A3o-e-commerce-v-1-5.pdf
-   * @version 1.1
+   * @version 1.1.1
    */
   class CorreiosRastreamento extends Correios
   {
@@ -66,7 +66,7 @@
         $this->tipo = $tipo;
       } else
       {
-        throw new Exception('Tipo de rastreamento inválido.');
+        throw new Exception('O tipo de rastreamento informado é inválido.');
       }
     }
 
@@ -83,7 +83,7 @@
         $this->resultado = $resultado;
       } else
       {
-        throw new Exception('Resultado de rastreamento inválido.');
+        throw new Exception('O tipos de resultado de rastreamento informado é inválido.');
       }
     }
 
@@ -95,12 +95,12 @@
      */
     public function addObjeto($objeto)
     {
-      if (strlen($objeto) == 13)
+      if (CorreiosSro::validaSro($objeto))
       {
         $this->objetos[] = $objeto;
       } else
       {
-        throw new Exception('Objeto inválido.');
+        throw new Exception('O número de objeto informado é inválido.');
       }
     }
 

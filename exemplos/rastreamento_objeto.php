@@ -15,6 +15,8 @@
   require '../classes/CorreiosRastreamentoResultado.php';
   require '../classes/CorreiosRastreamentoResultadoOjeto.php';
   require '../classes/CorreiosRastreamentoResultadoEvento.php';
+  require '../classes/CorreiosSro.php';
+  require '../classes/CorreiosSroDados.php';
 
   try
   {
@@ -22,8 +24,10 @@
     $rastreamento = new CorreiosRastreamento('ECT', 'SRO');
     //Envia os parâmetros
     $rastreamento->setTipo(Correios::TIPO_RASTREAMENTO_LISTA);
-    $rastreamento->setResultado(Correios::RESULTADO_RASTREAMENTO_TODOS);
+    $rastreamento->setResultado(Correios::RESULTADO_RASTREAMENTO_ULTIMO);
     $rastreamento->addObjeto('SF214702548BR');
+    $rastreamento->addObjeto('SF214702534BR');
+    $rastreamento->addObjeto('SC463841334BR');
     if ($rastreamento->processaConsulta())
     {
       $retorno = $rastreamento->getRetorno();
@@ -35,7 +39,11 @@
         echo 'Tipo de resultado......................: ' . $retorno->getTipoResultado() . PHP_EOL . PHP_EOL;
         foreach ($retorno->getResultados() as $resultado)
         {
-          echo 'Objeto................................: ' . $resultado->getObjeto() . PHP_EOL . PHP_EOL;
+          echo 'Objeto.................................: ' . $resultado->getObjeto() . PHP_EOL;
+          //Se desejar obter informações sobre o objeto
+          $dadosObjeto = new CorreiosSroDados($resultado->getObjeto());
+          echo 'Serviço................................: ' . $dadosObjeto->getDescricaoTipoServico() . PHP_EOL;
+          echo PHP_EOL;
           foreach ($resultado->getEventos() as $eventos)
           {
             echo ' - Tipo................................: ' . $eventos->getTipo() . ' - ' . $eventos->getDescricaoTipo() . PHP_EOL;

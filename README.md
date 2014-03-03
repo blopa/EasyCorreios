@@ -53,6 +53,8 @@ A versão atual destas classes está trabalhando com a versão 1.5 do webservice
 * Inclusão de tratamento para obter o primeiro evento de entrega (Créditos ao Renato Bigliazzi)
 * Inclusão de retorno de destino para eventos que possuem esta informação (Créditos ao Luiz Marcio Dias Carneiro Marques)
 * Inclusão de descrição do status (para eventos de problemas) de acordo com tabela fornecidas pelos Correios.
+* Melhoria nas mensagens de erro para ficar mais claro quando um erro ocorre por alguma entrada incorreta.
+* Ajuste para validar um código de rastreamento informado através da classe CorreiosSro.
 
 
 Validação/Identificação/Geração de dígito verificador de códigos de rastreio (SRO)
@@ -62,6 +64,10 @@ Conjunto de funções responsável por validar, identificar os parâmetros e ger
 de código de rastreamento (ou número de objeto) SRO dos Correios. Pode ser útil quando se deseja obter
 informações a respeito de um objeto ou para entrada de dados externas em seus sistemas.
 
+**Histórico de alterações**
+
+* **03/03/2014**:
+* Inclusão da classe CorreiosSroDados que retorna as informações relacionadas a um código de rastreamento.
 
 Contatos
 ========
