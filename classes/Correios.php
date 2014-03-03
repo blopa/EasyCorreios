@@ -4,7 +4,7 @@
    * Classe base para os serviços dos Correios.
    * 
    * @author Ivan Wilhelm <ivan.whm@me.com>
-   * @version 1.0
+   * @version 1.1
    * @abstract
    */
   abstract class Correios
@@ -58,6 +58,9 @@
     const TIPO_EVENTO_PO = 'PO';
     const TIPO_EVENTO_RO = 'RO';
     const TIPO_EVENTO_TR = 'TR';
+    const TIPO_CALCULO_PRECO_SO_PRECO = 'P';
+    const TIPO_CALCULO_PRECO_SO_PRAZO = 'Z';
+    const TIPO_CALCULO_PRECO_TODOS = 'T';
 
     /**
      * Contém os formatos aceitos.
@@ -121,6 +124,18 @@
     );
 
     /**
+     * Contém a lista de tipos de cálculo de preços e prazos possíveis.
+     * 
+     * @var array
+     * @static
+     */
+    protected static $tiposCalculo = array(
+      self::TIPO_CALCULO_PRECO_TODOS,
+      self::TIPO_CALCULO_PRECO_SO_PRECO,
+      self::TIPO_CALCULO_PRECO_SO_PRAZO,
+    );
+
+    /**
      * Contém a lista dos eventos de rastreamento.
      * 
      * @var array
@@ -148,6 +163,33 @@
       self::TIPO_EVENTO_PO => 'Postagem',
       self::TIPO_EVENTO_RO => 'Expedição de lista de registro',
       self::TIPO_EVENTO_TR => 'Trânsito',
+    );
+
+    /**
+     * Contém a descrição dos serviços.
+     * 
+     * @var array
+     * @static
+     */
+    public static $descricaoServico = array(
+      self::SERVICO_SEDEX_SEM_CONTRATO => 'Sedex sem contrato',
+      self::SERVICO_SEDEX_A_COBRAR_SEM_CONTRATO_1 => 'Sedex a Cobrar sem contrato',
+      self::SERVICO_SEDEX_A_COBRAR_COM_CONTRATO_2 => 'Sedex a Cobrar com contrato',
+      self::SERVICO_SEDEX_10_SEM_CONTRATO => 'Sedex 10 sem contrato',
+      self::SERVICO_SEDEX_HOJE_SEM_CONTRATO => 'Sedex Hoje sem contrato',
+      self::SERVICO_SEDEX_COM_CONTRATO_1 => 'Sedex com contrato',
+      self::SERVICO_SEDEX_COM_CONTRATO_2 => 'Sedex com contrato',
+      self::SERVICO_SEDEX_COM_CONTRATO_3 => 'Sedex com contrato',
+      self::SERVICO_SEDEX_COM_CONTRATO_4 => 'Sedex com contrato',
+      self::SERVICO_SEDEX_COM_CONTRATO_5 => 'Sedex com contrato',
+      self::SERVICO_PAC_SEM_CONTRATO => 'PAC sem contrato',
+      self::SERVICO_PAC_COM_CONTRATO => 'PAC com contrato',
+      self::SERVICO_ESEDEX_COM_CONTRATO => 'eSedex com contrato',
+      self::SERVICO_ESEDEX_PRIORITARIO_COM_CONTRATO => 'eSedex Prioritário com contrato',
+      self::SERVICO_ESEDEX_EXPRESS_COM_CONTRATO => 'eSedex Express com contrato',
+      self::SERVICO_ESEDEX_COM_CONTRATO_GRUPO_1 => 'eSedex com contrato',
+      self::SERVICO_ESEDEX_COM_CONTRATO_GRUPO_2 => 'eSedex com contrato',
+      self::SERVICO_ESEDEX_COM_CONTRATO_GRUPO_3 => 'eSedex com contrato',
     );
 
     /**

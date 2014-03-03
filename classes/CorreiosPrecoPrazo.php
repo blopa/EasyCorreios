@@ -2,7 +2,7 @@
 
   /**
    * Classe para Cálculo de Preços e Prazos de Encomendas.
-   * Baseado na versão 1.7 do cálculo.
+   * Baseado na versão 1.9 do cálculo.
    * 
    * O cálculo remoto de preços e prazos de encomendas dos Correios é destinado
    * aos clientes que possuem contrato de Sedex, e-Sedex e PAC, que necessitam
@@ -20,6 +20,13 @@
    */
   final class CorreiosPrecoPrazo extends Correios
   {
+
+    /**
+     * Contém o tipo de cálculo de preço.
+     * @see Correios::$tiposCalculo
+     * @var string
+     */
+    private $tipoCalculo = Correios::TIPO_CALCULO_PRECO_TODOS;
 
     /**
      * Contém o CEP de origem.
@@ -41,6 +48,7 @@
 
     /**
      * Contém o formato da encomenda.
+     * @see Correios::$formatos
      * @var integer
      */
     private $formato;
@@ -89,6 +97,7 @@
 
     /**
      * Contém os códigos de serviço utilizados.
+     * @see Correios::$servicos
      * @var array
      */
     private $servicosConsulta = array();
@@ -99,6 +108,36 @@
      * @var CorreiosPrecoPrazoResult[]
      */
     private $retornos = array();
+
+    /**
+     * Cria um objeto de comunicação com os Correios.
+     * 
+     * @param string $usuario Usuário.
+     * @param string $senha Senha.
+     * @param string $tipoCalculo Tipo de cálculo.
+     */
+    public function __construct($usuario = '', $senha = '', $tipoCalculo = Correios::TIPO_CALCULO_PRECO_TODOS)
+    {
+      parent::__construct($usuario, $senha);
+      $this->setTipoCalculo($tipoCalculo);
+    }
+
+    /**
+     * Define o tipo de cálculo de preço e prazo.
+     * 
+     * @param string $tipoCalculo Tipo de cálculo.
+     * @throws Exception
+     */
+    private function setTipoCalculo($tipoCalculo)
+    {
+      if (in_array($tipoCalculo, parent::$tiposCalculo))
+      {
+        $this->tipoCalculo = $tipoCalculo;
+      } else
+      {
+        throw new Exception('O tipo de cálculo de preço e prazo informado é inválido.');
+      }
+    }
 
     /**
      * Adiciona um código de serviço para realizar a consulta.
@@ -113,7 +152,7 @@
         $this->servicosConsulta[] = $codigoServico;
       } else
       {
-        throw new Exception('Código de servico inválido.');
+        throw new Exception('O código de serviço informado é inválido.');
       }
     }
 
@@ -151,7 +190,7 @@
         $this->peso = $peso;
       } else
       {
-        throw new Exception('Peso inválido.');
+        throw new Exception('O peso informado inválido.');
       }
     }
 
@@ -168,7 +207,7 @@
         $this->formato = $formato;
       } else
       {
-        throw new Exception('Formato inválido.');
+        throw new Exception('O formato da encomenda informado é inválido.');
       }
     }
 
@@ -185,7 +224,7 @@
         $this->comprimento = $comprimento;
       } else
       {
-        throw new Exception('Comprimento inválido.');
+        throw new Exception('O comprimento da encomenda informado é inválido.');
       }
     }
 
@@ -202,7 +241,7 @@
         $this->altura = $altura;
       } else
       {
-        throw new Exception('Altura inválida.');
+        throw new Exception('A altura da encomenda informada é inválida.');
       }
     }
 
@@ -219,7 +258,7 @@
         $this->largura = $largura;
       } else
       {
-        throw new Exception('Largura inválida.');
+        throw new Exception('A largura da encomenda informada inválida.');
       }
     }
 
@@ -236,7 +275,7 @@
         $this->diametro = $diametro;
       } else
       {
-        throw new Exception('Diâmetro inválido.');
+        throw new Exception('O diâmetro da encomenda informado é inválido.');
       }
     }
 
@@ -253,7 +292,7 @@
         $this->maoPropria = $maoPropria;
       } else
       {
-        throw new Exception('Mão própria inválida.');
+        throw new Exception('O tipo de mão própria informado é inválido.');
       }
     }
 
@@ -271,7 +310,7 @@
         $this->valorDeclarado = $valorDeclarado;
       } else
       {
-        throw new Exception('Valor declarado inválido.');
+        throw new Exception('O valor declarado informado é inválido.');
       }
     }
 
@@ -288,8 +327,18 @@
         $this->avisoRecebimento = $avisoRecebimento;
       } else
       {
-        throw new Exception('Aviso de recebimento inválido.');
+        throw new Exception('O tipo de aviso de recebimento informado é inválido.');
       }
+    }
+
+    /**
+     * Retorna o tipo de cálculo efetuado.
+     * 
+     * @return string
+     */
+    public function getTipoCalculo()
+    {
+      return $this->tipoCalculo;
     }
 
     /**
@@ -320,22 +369,32 @@
      */
     protected function getParametros()
     {
-      $parametros = array(
-        'nCdEmpresa' => (string) $this->getUsuario(),
-        'sDsSenha' => (string) $this->getSenha(),
-        'nCdServico' => (string) $this->getServicos(),
-        'sCepOrigem' => (string) $this->cepOrigem,
-        'sCepDestino' => (string) $this->cepDestino,
-        'nVlPeso' => (float) $this->peso,
-        'nCdFormato' => (integer) $this->formato,
-        'nVlComprimento' => (float) $this->comprimento,
-        'nVlAltura' => (float) $this->altura,
-        'nVlLargura' => (float) $this->largura,
-        'nVlDiametro' => (float) $this->diametro,
-        'sCdMaoPropria' => (string) $this->maoPropria ? 'S' : 'N',
-        'nVlValorDeclarado' => (float) $this->valorDeclarado,
-        'sCdAvisoRecebimento' => (string) $this->avisoRecebimento ? 'S' : 'N',
-      );
+      if ($this->tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRAZO)
+      {
+        $parametros = array(
+          'nCdServico' => (string) $this->getServicos(),
+          'sCepOrigem' => (string) $this->cepOrigem,
+          'sCepDestino' => (string) $this->cepDestino,
+        );
+      } else
+      {
+        $parametros = array(
+          'nCdEmpresa' => (string) $this->getUsuario(),
+          'sDsSenha' => (string) $this->getSenha(),
+          'nCdServico' => (string) $this->getServicos(),
+          'sCepOrigem' => (string) $this->cepOrigem,
+          'sCepDestino' => (string) $this->cepDestino,
+          'nVlPeso' => (float) $this->peso,
+          'nCdFormato' => (integer) $this->formato,
+          'nVlComprimento' => (float) $this->comprimento,
+          'nVlAltura' => (float) $this->altura,
+          'nVlLargura' => (float) $this->largura,
+          'nVlDiametro' => (float) $this->diametro,
+          'sCdMaoPropria' => (string) $this->maoPropria ? 'S' : 'N',
+          'nVlValorDeclarado' => (float) $this->valorDeclarado,
+          'sCdAvisoRecebimento' => (string) $this->avisoRecebimento ? 'S' : 'N',
+        );
+      }
       return $parametros;
     }
 
@@ -356,21 +415,41 @@
         if (@fopen(parent::URL_CALCULADOR, 'r'))
         {
           $soap = new SoapClient(parent::URL_CALCULADOR);
-          $retorno = $soap->CalcPrecoPrazo($this->getParametros());
 
+          //Define os métodos de consulta e retorno
+          switch ($this->tipoCalculo)
+          {
+            case Correios::TIPO_CALCULO_PRECO_TODOS:
+              $metodoConsulta = 'CalcPrecoPrazo';
+              $metodoRetorno = 'CalcPrecoPrazoResult';
+              break;
+            case Correios::TIPO_CALCULO_PRECO_SO_PRAZO:
+              $metodoConsulta = 'CalcPrazo';
+              $metodoRetorno = 'CalcPrazoResult';
+              break;
+            case Correios::TIPO_CALCULO_PRECO_SO_PRECO:
+              $metodoConsulta = 'CalcPreco';
+              $metodoRetorno = 'CalcPrecoResult';
+              break;
+          }
+
+          //Consulta os dados
+          $retorno = $soap->$metodoConsulta($this->getParametros());
+
+          //Pega o retorno
           if ($retorno instanceof stdClass)
           {
-            $retornosConsulta = $retorno->CalcPrecoPrazoResult->Servicos->cServico;
+            $retornosConsulta = $retorno->$metodoRetorno->Servicos->cServico;
             if (is_array($retornosConsulta))
             {
               foreach ($retornosConsulta as $retornoConsulta)
               {
-                $servico = new CorreiosPrecoPrazoResultado($retornoConsulta);
+                $servico = new CorreiosPrecoPrazoResultado($retornoConsulta, $this->tipoCalculo);
                 $this->retornos[] = $servico;
               }
             } else if ($retornosConsulta instanceof stdClass)
             {
-              $servico = new CorreiosPrecoPrazoResultado($retornosConsulta);
+              $servico = new CorreiosPrecoPrazoResultado($retornosConsulta, $this->tipoCalculo);
               $this->retornos[] = $servico;
             }
             return TRUE;

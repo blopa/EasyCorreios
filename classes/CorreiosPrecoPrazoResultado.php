@@ -6,7 +6,7 @@
    *  
    * @author Ivan Wilhelm <ivan.whm@me.com>
    * @see http://www.correios.com.br/webServices/PDF/SCPP_manual_implementacao_calculo_remoto_de_precos_e_prazos.pdf
-   * @version 1.0
+   * @version 1.1
    * @final
    */
   final class CorreiosPrecoPrazoResultado
@@ -87,19 +87,28 @@
      * Cria um objeto para tratar o retorno da consulta.
      * 
      * @param stdClass $retorno Retorno da consulta.
+     * @param string $tipoCalculo Tipo de cálculo.
      */
-    public function __construct(stdClass $retorno)
+    public function __construct(stdClass $retorno, $tipoCalculo)
     {
       $this->setCodigo($retorno->Codigo);
-      $this->setValor($retorno->Valor);
-      $this->setPrazoEntrega($retorno->PrazoEntrega);
-      $this->setValorMaoPropria($retorno->ValorMaoPropria);
-      $this->setValorAvisoRecebimento($retorno->ValorAvisoRecebimento);
-      $this->setValorValorDeclarado($retorno->ValorValorDeclarado);
-      $this->setEntregaDomiciliar($retorno->EntregaDomiciliar);
-      $this->setEntregaSabado($retorno->EntregaSabado);
       $this->setErro($retorno->Erro);
       $this->setMensagemErro($retorno->MsgErro);
+
+      if (($tipoCalculo == Correios::TIPO_CALCULO_PRECO_TODOS) or ($tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRAZO))
+      {
+        $this->setPrazoEntrega($retorno->PrazoEntrega);
+        $this->setEntregaDomiciliar($retorno->EntregaDomiciliar);
+        $this->setEntregaSabado($retorno->EntregaSabado);
+      }
+
+      if (($tipoCalculo == Correios::TIPO_CALCULO_PRECO_TODOS) or ($tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRECO))
+      {
+        $this->setValor($retorno->Valor);
+        $this->setValorMaoPropria($retorno->ValorMaoPropria);
+        $this->setValorAvisoRecebimento($retorno->ValorAvisoRecebimento);
+        $this->setValorValorDeclarado($retorno->ValorValorDeclarado);
+      }
     }
 
     /**
