@@ -37,6 +37,7 @@
     const TIPO_RASTREAMENTO_INTERVALO = 'F';
     const RESULTADO_RASTREAMENTO_TODOS = 'T';
     const RESULTADO_RASTREAMENTO_ULTIMO = 'U';
+    const RESULTADO_RASTREAMENTO_PRIMEIRO = 'P';
     const TIPO_EVENTO_BDE = 'BDE';
     const TIPO_EVENTO_BDI = 'BDI';
     const TIPO_EVENTO_BDR = 'BDR';
@@ -121,6 +122,7 @@
     protected static $resultadosRastreamento = array(
       self::RESULTADO_RASTREAMENTO_TODOS,
       self::RESULTADO_RASTREAMENTO_ULTIMO,
+      self::RESULTADO_RASTREAMENTO_PRIMEIRO,
     );
 
     /**
@@ -190,6 +192,326 @@
       self::SERVICO_ESEDEX_COM_CONTRATO_GRUPO_1 => 'eSedex com contrato',
       self::SERVICO_ESEDEX_COM_CONTRATO_GRUPO_2 => 'eSedex com contrato',
       self::SERVICO_ESEDEX_COM_CONTRATO_GRUPO_3 => 'eSedex com contrato',
+    );
+    
+    /**
+     * Contém a relação de mensagens de retorno ao cliente quando ocorre algum
+     * evento na entrega pelos correios.
+     * 
+     * @var array
+     * @static
+     */
+    public static $statusRastreamento = array(
+      1 => array(
+        'mensagem' => 'Entregue.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      2 => array(
+        'mensagem' => 'Destinatário ausente – encaminhado para entrega interna.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      3 => array(
+        'mensagem' => 'Não procurado.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      4 => array(
+        'mensagem' => 'Recusado – em tratamento, aguarde.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      5 => array(
+        'mensagem' => 'Em devolução – informações.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      6 => array(
+        'mensagem' => 'Destinatário desconhecido no endereço – Em tratamento, aguarde.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      7 => array(
+        'mensagem' => 'Endereço insuficiente para entrega – Em tratamento, aguarde.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      8 => array(
+        'mensagem' => 'Não existe o número indicado – Em tratamento, aguarde.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      9 => array(
+        'mensagem' => 'Por favor, entre em contato conosco.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      10 => array(
+        'mensagem' => 'Destinatário mudou-se – Em tratamento, aguarde.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      12 => array(
+        'mensagem' => 'Por favor, entre em contato conosco.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      19 => array(
+        'mensagem' => 'Endereço incorreto – Poderá haver atraso ou devolução.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      20 => array(
+        'mensagem' => 'Destinatário ausente. Será realizada uma nova tentativa de entrega.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      21 => array(
+        'mensagem' => 'Destinatário ausente. O objeto está sendo devolvido ao remetente.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      22 => array(
+        'mensagem' => 'Reintegrado ao fluxo postal – Em tratamento, aguarde.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      23 => array(
+        'mensagem' => 'Distribuído ao remetente.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      24 => array(
+        'mensagem' => 'Disponível na caixa postal.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      25 => array(
+        'mensagem' => 'Empresa sem expediente.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      26 => array(
+        'mensagem' => 'Não procurado – O objeto está sendo devolvido ao remetente.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      27 => array(
+        'mensagem' => 'Pedido não solicitado – O objeto está sendo devolvido ao remetente.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      28 => array(
+        'mensagem' => 'Por favor, entre em contato conosco.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      31 => array(
+        'mensagem' => 'Por favor, entre em contato conosco.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      32 => array(
+        'mensagem' => 'Entrega programada.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      33 => array(
+        'mensagem' => 'Documentação não fornecida pelo Destinatário.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      34 => array(
+        'mensagem' => 'Logradouro com numeração irregular - Em verificação, aguarde.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      35 => array(
+        'mensagem' => 'Logística reversa simultânea – nova tentativa.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      36 => array(
+        'mensagem' => 'Logística reversa simultânea – devolução da entrega.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      40 => array(
+        'mensagem' => 'Devolvido ao remetente – Importação não autorizada.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDI,
+        ),
+      ),
+      41 => array(
+        'mensagem' => 'Aguardando parte do lote.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      42 => array(
+        'mensagem' => 'Devolvido ao remetente – Lote incompleto.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      43 => array(
+        'mensagem' => 'Por favor, entre em contato conosco.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      44 => array(
+        'mensagem' => 'Por favor, entre em contato conosco.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      45 => array(
+        'mensagem' => 'Recebido na unidade de distribuição.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      46 => array(
+        'mensagem' => 'Entrega não efetuada.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      47 => array(
+        'mensagem' => 'A saída do carteiro foi cancelada. Será retomada o mais breve possível.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      48 => array(
+        'mensagem' => 'Endereço sem distribuição domiciliária e com entrega interna não autorizada pelo remetente.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      50 => array(
+        'mensagem' => 'Por favor, entre em contato conosco.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      51 => array(
+        'mensagem' => 'Por favor, entre em contato conosco.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      52 => array(
+        'mensagem' => 'Por favor, entre em contato conosco.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
+      69 => array(
+        'mensagem' => 'Por favor, entre em contato conosco.',
+        'tipos' => array(
+          Correios::TIPO_EVENTO_BDE,
+          Correios::TIPO_EVENTO_BDI,
+          Correios::TIPO_EVENTO_BDR,
+        ),
+      ),
     );
 
     /**

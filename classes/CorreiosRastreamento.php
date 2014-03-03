@@ -17,7 +17,7 @@
    *
    * @author Ivan Wilhelm <ivan.whm@me.com>
    * @see http://blog.correios.com.br/comercioeletronico/wp-content/uploads/2011/10/Guia-Tecnico-Rastreamento-XML-Cliente-Vers%C3%A3o-e-commerce-v-1-5.pdf
-   * @version 1.0
+   * @version 1.1
    */
   class CorreiosRastreamento extends Correios
   {
@@ -165,7 +165,7 @@
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($this->getParametros()));
         $result = curl_exec($curl);
-        $saida = utf8_encode($result);
+        $saida = $result;
         curl_close($curl);
         $resultado = simplexml_load_string($saida);
         if ($resultado instanceof SimpleXMLElement)
@@ -186,15 +186,24 @@
               {
                 $evento = new CorreiosRastreamentoResultadoEvento();
                 $evento->setTipo(isset($eventoObjeto->tipo) ? (string) $eventoObjeto->tipo : '');
-                $evento->setStatus(isset($eventoObjeto->status) ? (string) $eventoObjeto->status : '');
+                $evento->setStatus(isset($eventoObjeto->status) ? (integer) $eventoObjeto->status : 0);
                 $evento->setData(isset($eventoObjeto->data) ? (string) $eventoObjeto->data : '');
                 $evento->setHora(isset($eventoObjeto->hora) ? (string) $eventoObjeto->hora : '');
                 $evento->setDescricao(isset($eventoObjeto->descricao) ? (string) $eventoObjeto->descricao : '');
                 $evento->setComentario(isset($eventoObjeto->comentario) ? (string) $eventoObjeto->comentario : '');
-                $evento->setLocal(isset($eventoObjeto->local) ? (string) $eventoObjeto->local : '');
-                $evento->setCodigo(isset($eventoObjeto->codigo) ? (string) $eventoObjeto->codigo : '');
-                $evento->setCidade(isset($eventoObjeto->cidade) ? (string) $eventoObjeto->cidade : '');
-                $evento->setUf(isset($eventoObjeto->uf) ? (string) $eventoObjeto->uf : '');
+                $evento->setLocalEvento(isset($eventoObjeto->local) ? (string) $eventoObjeto->local : '');
+                $evento->setCodigoEvento(isset($eventoObjeto->codigo) ? (string) $eventoObjeto->codigo : '');
+                $evento->setCidadeEvento(isset($eventoObjeto->cidade) ? (string) $eventoObjeto->cidade : '');
+                $evento->setUfEvento(isset($eventoObjeto->uf) ? (string) $eventoObjeto->uf : '');
+                $evento->setPossuiDestino(isset($eventoObjeto->destino));
+                if (isset($eventoObjeto->destino))
+                {
+                  $evento->setLocalDestino(isset($eventoObjeto->destino->local) ? $eventoObjeto->destino->local : '');
+                  $evento->setCidadeDestino(isset($eventoObjeto->destino->cidade) ? $eventoObjeto->destino->cidade : '');
+                  $evento->setBairroDestino(isset($eventoObjeto->destino->bairro) ? $eventoObjeto->destino->bairro : '');
+                  $evento->setUfDestino(isset($eventoObjeto->destino->uf) ? $eventoObjeto->destino->uf : '');
+                  $evento->setCodigoDestino(isset($eventoObjeto->destino->codigo) ? $eventoObjeto->destino->codigo : '');
+                }
                 $objeto->addEvento($evento);
               }
               $rastreamento->addResultado($objeto);

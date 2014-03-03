@@ -5,7 +5,7 @@
    *  
    * @author Ivan Wilhelm <ivan.whm@me.com>
    * @see http://blog.correios.com.br/comercioeletronico/wp-content/uploads/2011/10/Guia-Tecnico-Rastreamento-XML-Cliente-Vers%C3%A3o-e-commerce-v-1-5.pdf
-   * @version 1.0
+   * @version 1.1
    */
   final class CorreiosRastreamentoResultadoEvento extends CorreiosRastreamentoResultadoOjeto
   {
@@ -20,7 +20,7 @@
     /**
      * Contém o status do evento de retorno.
      * 
-     * @var string
+     * @var integer
      */
     private $status;
 
@@ -57,28 +57,70 @@
      * 
      * @var string
      */
-    private $local;
+    private $localEvento;
 
     /**
      * Contém o CEP da unidade ECT.
      * 
      * @var string
      */
-    private $codigo;
+    private $codigoEvento;
 
     /**
      * Contém a cidade onde ocorreu o evento.
      * 
      * @var string
      */
-    private $cidade;
+    private $cidadeEvento;
 
     /**
-     * Contém a unidade da federação.
+     * Contém a unidade da federação onde ocorreu o evento.
      * 
      * @var string
      */
-    private $uf;
+    private $ufEvento;
+
+    /**
+     * Contém o local de destino.
+     * 
+     * @var string
+     */
+    private $localDestino;
+
+    /**
+     * Contém o CEP de destino.
+     * 
+     * @var string
+     */
+    private $codigoDestino;
+
+    /**
+     * Contém a cidade de destino.
+     * 
+     * @var string
+     */
+    private $cidadeDestino;
+
+    /**
+     * Contém o bairro de destino.
+     * 
+     * @var string
+     */
+    private $bairroDestino;
+
+    /**
+     * Contém a unidade da federação de destino.
+     * 
+     * @var string
+     */
+    private $ufDestino;
+
+    /**
+     * Indica se o evento possui informação do destino.
+     * 
+     * @var boolean
+     */
+    private $possuiDestino;
 
     /**
      * Indica o tipo do evento de retorno.
@@ -93,7 +135,7 @@
     /**
      * Indica o status do evento de retorno.
      * 
-     * @param string $status Status do evento de retorno.
+     * @param integer $status Status do evento de retorno.
      */
     public function setStatus($status)
     {
@@ -145,9 +187,9 @@
      * 
      * @param string $local Local onde ocorreu o evento.
      */
-    public function setLocal($local)
+    public function setLocalEvento($local)
     {
-      $this->local = $local;
+      $this->localEvento = $local;
     }
 
     /**
@@ -155,9 +197,9 @@
      * 
      * @param string $codigo CEP da unidade ECT.
      */
-    public function setCodigo($codigo)
+    public function setCodigoEvento($codigo)
     {
-      $this->codigo = $codigo;
+      $this->codigoEvento = $codigo;
     }
 
     /**
@@ -165,9 +207,9 @@
      * 
      * @param string $cidade Cidade onde ocorreu o evento.
      */
-    public function setCidade($cidade)
+    public function setCidadeEvento($cidade)
     {
-      $this->cidade = $cidade;
+      $this->cidadeEvento = $cidade;
     }
 
     /**
@@ -175,9 +217,69 @@
      * 
      * @param string $uf Unidade da federação.
      */
-    public function setUf($uf)
+    public function setUfEvento($uf)
     {
-      $this->uf = $uf;
+      $this->ufEvento = $uf;
+    }
+
+    /**
+     * Indica se o evento possui destino.
+     * 
+     * @param boolean $possuiDestino Indica se possui destino.
+     */
+    public function setPossuiDestino($possuiDestino)
+    {
+      $this->possuiDestino = $possuiDestino;
+    }
+
+    /**
+     * Indica o local de destino.
+     * 
+     * @param string $localDestino Local de destino.
+     */
+    public function setLocalDestino($localDestino)
+    {
+      $this->localDestino = $localDestino;
+    }
+
+    /**
+     * Indica o CEP de destino.
+     * 
+     * @param string $codigoDestino CEP de destino.
+     */
+    public function setCodigoDestino($codigoDestino)
+    {
+      $this->codigoDestino = $codigoDestino;
+    }
+
+    /**
+     * Indica a cidade de destino.
+     * 
+     * @param string $cidadeDestino Cidade de destino.
+     */
+    public function setCidadeDestino($cidadeDestino)
+    {
+      $this->cidadeDestino = $cidadeDestino;
+    }
+
+    /**
+     * Indica o bairro de destino.
+     * 
+     * @param string $bairroDestino Bairro de destino.
+     */
+    public function setBairroDestino($bairroDestino)
+    {
+      $this->bairroDestino = $bairroDestino;
+    }
+
+    /**
+     * Indica a UF de destino.
+     * 
+     * @param string $ufDestino UF de destino.
+     */
+    public function setUfDestino($ufDestino)
+    {
+      $this->ufDestino = $ufDestino;
     }
 
     /**
@@ -203,7 +305,7 @@
     /**
      * Retorna o status do evento de retorno.
      * 
-     * @return string
+     * @return integer
      */
     public function getStatus()
     {
@@ -255,9 +357,9 @@
      * 
      * @return string
      */
-    public function getLocal()
+    public function getLocalEvento()
     {
-      return $this->local;
+      return $this->localEvento;
     }
 
     /**
@@ -265,9 +367,9 @@
      * 
      * @return string
      */
-    public function getCodigo()
+    public function getCodigoEvento()
     {
-      return $this->codigo;
+      return $this->codigoEvento;
     }
 
     /**
@@ -275,9 +377,9 @@
      * 
      * @return string
      */
-    public function getCidade()
+    public function getCidadeEvento()
     {
-      return $this->cidade;
+      return $this->cidadeEvento;
     }
 
     /**
@@ -285,9 +387,78 @@
      * 
      * @return string
      */
-    public function getUf()
+    public function getUfEvento()
     {
-      return $this->uf;
+      return $this->ufEvento;
+    }
+
+    /**
+     * Retorna se o evento possui destino.
+     * 
+     * @return boolean
+     */
+    public function getPossuiDestino()
+    {
+      return $this->possuiDestino;
+    }
+
+    /**
+     * Retorna o local de destino.
+     * 
+     * @return string
+     */
+    public function getLocalDestino()
+    {
+      return $this->localDestino;
+    }
+
+    /**
+     * Retorna o CEP de destino.
+     * 
+     * @return string
+     */
+    public function getCodigoDestino()
+    {
+      return $this->codigoDestino;
+    }
+
+    /**
+     * Retorna a cidade de destino.
+     * 
+     * @return string
+     */
+    public function getCidadeDestino()
+    {
+      return $this->cidadeDestino;
+    }
+
+    /**
+     * Retorna o bairro de destino.
+     * 
+     * @return string
+     */
+    public function getBairroDestino()
+    {
+      return $this->bairroDestino;
+    }
+
+    /**
+     * Retorna a UF de destino.
+     * 
+     * @return string
+     */
+    public function getUfDestino()
+    {
+      return $this->ufDestino;
+    }
+
+    /**
+     * Retorna a descrição do status do objeto.
+     * @return string
+     */
+    public function getDescricaoStatus()
+    {
+      return ((isset(Correios::$statusRastreamento[$this->getStatus()])) and in_array($this->tipo, Correios::$statusRastreamento[$this->getStatus()]['tipos'])) ? Correios::$statusRastreamento[$this->getStatus()]['mensagem'] : 'Andamento normal.';
     }
 
   }
