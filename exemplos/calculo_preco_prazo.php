@@ -5,7 +5,7 @@
    * dos Correios.
    * 
    * @author Ivan Wilhelm <ivan.whm@me.com>
-   * @version 1.1
+   * @version 1.2
    */
   //Ajusta a codificação e o tipo do conteúdo
   header('Content-type: text/txt; charset=utf-8');
@@ -23,20 +23,23 @@
     //Envia os parâmetros
     //Parâmetros necessários apenas nos tipos de cálculo todos OU SO_PRAZO
     $calculo->setCepOrigem('89050100');
-    $calculo->setCepDestino('89130000');
+    $calculo->setCepDestino('89010130');
     $calculo->addServico(Correios::SERVICO_SEDEX_SEM_CONTRATO);
     $calculo->addServico(Correios::SERVICO_PAC_SEM_CONTRATO);
     $calculo->addServico(Correios::SERVICO_SEDEX_10_SEM_CONTRATO);
     $calculo->addServico(Correios::SERVICO_ESEDEX_COM_CONTRATO);
     //Parâmetros necessários apenas nos tipos de cálculo TODOS ou SO_PRECO
     $calculo->setFormato(Correios::FORMATO_CAIXA_PACOTE);
-    $calculo->setPeso(29.56);
+    $calculo->setPeso(9.56);
     $calculo->setValorDeclarado(9637.89);
     $calculo->hasMaoPropria(FALSE);
     $calculo->hasAvisoRecebimento(TRUE);
     $calculo->setAltura(2.0);
     $calculo->setLargura(11.0);
     $calculo->setComprimento(16.0);
+    //Se as chamadas forem realizadas a partir de uma database
+    //Caso contrário não necessita chamar o método.
+    $calculo->setDataBaseCalculo(new DateTime('03/03/2013'));
     //Verifica processamento
     if ($calculo->processaConsulta())
     {
@@ -48,7 +51,14 @@
         {
           //Imprime o resultado
           echo 'Serviço................................: ' . $retorno->getCodigo() . ' (' . Correios::$descricaoServico[$retorno->getCodigo()] . ')' . PHP_EOL;
-          if (($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_TODOS) or ($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_SO_PRAZO))
+          if ($calculo->getDataBaseCalculo() instanceof DateTime)
+          {
+            echo 'Database de cálculo....................: ' . $calculo->getDataBaseCalculo()->format('d/m/Y') . PHP_EOL;
+          }
+          if (($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_TODOS) or
+              ($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_SO_PRAZO) or
+              ($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_TODOS_COM_DATABASE) or
+              ($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_SO_PRAZO_COM_DATABASE))
           {
             $entregaDomiciliar = $retorno->getEntregaDomiciliar() ? 'Sim' : 'Não';
             $entregaSabado = $retorno->getEntregaSabado() ? 'Sim' : 'Não';
@@ -56,7 +66,10 @@
             echo 'Entrega domiciliar.....................: ' . $entregaDomiciliar . PHP_EOL;
             echo 'Entrega sábado.........................: ' . $entregaSabado . PHP_EOL;
           }
-          if (($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_TODOS) or ($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_SO_PRECO))
+          if (($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_TODOS) or
+              ($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_SO_PRECO) or
+              ($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_TODOS_COM_DATABASE) or
+              ($calculo->getTipoCalculo() == Correios::TIPO_CALCULO_PRECO_SO_PRECO_COM_DATABASE))
           {
             echo 'Valor..................................: R$ ' . number_format($retorno->getValor(), 2, ',', '.') . PHP_EOL;
             echo 'Valor do serviço mão própria...........: R$ ' . number_format($retorno->getValorMaoPropria(), 2, ',', '.') . PHP_EOL;

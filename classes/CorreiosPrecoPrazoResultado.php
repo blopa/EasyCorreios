@@ -6,7 +6,7 @@
    *  
    * @author Ivan Wilhelm <ivan.whm@me.com>
    * @see http://www.correios.com.br/webServices/PDF/SCPP_manual_implementacao_calculo_remoto_de_precos_e_prazos.pdf
-   * @version 1.1
+   * @version 1.2
    * @final
    */
   final class CorreiosPrecoPrazoResultado
@@ -95,14 +95,20 @@
       $this->setErro($retorno->Erro);
       $this->setMensagemErro($retorno->MsgErro);
 
-      if (($tipoCalculo == Correios::TIPO_CALCULO_PRECO_TODOS) or ($tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRAZO))
+      if (($tipoCalculo == Correios::TIPO_CALCULO_PRECO_TODOS) or
+          ($tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRAZO) or
+          ($tipoCalculo == Correios::TIPO_CALCULO_PRECO_TODOS_COM_DATABASE) or
+          ($tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRAZO_COM_DATABASE))
       {
         $this->setPrazoEntrega($retorno->PrazoEntrega);
         $this->setEntregaDomiciliar($retorno->EntregaDomiciliar);
         $this->setEntregaSabado($retorno->EntregaSabado);
       }
 
-      if (($tipoCalculo == Correios::TIPO_CALCULO_PRECO_TODOS) or ($tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRECO))
+      if (($tipoCalculo == Correios::TIPO_CALCULO_PRECO_TODOS) or
+          ($tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRECO) or
+          ($tipoCalculo == Correios::TIPO_CALCULO_PRECO_TODOS_COM_DATABASE) or
+          ($tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRECO_COM_DATABASE))
       {
         $this->setValor($retorno->Valor);
         $this->setValorMaoPropria($retorno->ValorMaoPropria);

@@ -15,7 +15,7 @@
    *
    * @author Ivan Wilhelm <ivan.whm@me.com>
    * @see http://www.correios.com.br/webServices/PDF/SCPP_manual_implementacao_calculo_remoto_de_precos_e_prazos.pdf
-   * @version 1.1
+   * @version 1.2
    * @final
    */
   final class CorreiosPrecoPrazo extends Correios
@@ -94,6 +94,12 @@
      * @var boolean
      */
     private $avisoRecebimento;
+
+    /**
+     * Contém a database para o cálculo.
+     * @var DateTime
+     */
+    private $dataBaseCalculo;
 
     /**
      * Contém os códigos de serviço utilizados.
@@ -332,6 +338,16 @@
     }
 
     /**
+     * Indica a database de cálculo.
+     * 
+     * @param DateTime $dataBaseCalculo Database do cálculo.
+     */
+    public function setDataBaseCalculo(DateTime $dataBaseCalculo)
+    {
+      $this->dataBaseCalculo = $dataBaseCalculo;
+    }
+
+    /**
      * Retorna o tipo de cálculo efetuado.
      * 
      * @return string
@@ -339,6 +355,15 @@
     public function getTipoCalculo()
     {
       return $this->tipoCalculo;
+    }
+
+    /**
+     * Retorna a database de cálculo.
+     * @return DateTime
+     */
+    public function getDataBaseCalculo()
+    {
+      return $this->dataBaseCalculo;
     }
 
     /**
@@ -369,7 +394,8 @@
      */
     protected function getParametros()
     {
-      if ($this->tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRAZO)
+      if (($this->tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRAZO) or
+          ($this->tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRAZO_COM_DATABASE))
       {
         $parametros = array(
           'nCdServico' => (string) $this->getServicos(),
@@ -394,6 +420,13 @@
           'nVlValorDeclarado' => (float) $this->valorDeclarado,
           'sCdAvisoRecebimento' => (string) $this->avisoRecebimento ? 'S' : 'N',
         );
+      }
+      //Se as chamadas tiverem database de cálculo
+      if (($this->tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRAZO_COM_DATABASE) or
+          ($this->tipoCalculo == Correios::TIPO_CALCULO_PRECO_SO_PRECO_COM_DATABASE) or
+          ($this->tipoCalculo == Correios::TIPO_CALCULO_PRECO_TODOS_COM_DATABASE))
+      {
+        $parametros['sDtCalculo'] = (string) $this->dataBaseCalculo->format('d/m/Y');
       }
       return $parametros;
     }
@@ -430,6 +463,18 @@
             case Correios::TIPO_CALCULO_PRECO_SO_PRECO:
               $metodoConsulta = 'CalcPreco';
               $metodoRetorno = 'CalcPrecoResult';
+              break;
+            case Correios::TIPO_CALCULO_PRECO_TODOS_COM_DATABASE:
+              $metodoConsulta = 'CalcPrecoPrazoData';
+              $metodoRetorno = 'CalcPrecoPrazoDataResult';
+              break;
+            case Correios::TIPO_CALCULO_PRECO_SO_PRAZO_COM_DATABASE:
+              $metodoConsulta = 'CalcPrazoData';
+              $metodoRetorno = 'CalcPrazoDataResult';
+              break;
+            case Correios::TIPO_CALCULO_PRECO_SO_PRECO_COM_DATABASE:
+              $metodoConsulta = 'CalcPrecoData';
+              $metodoRetorno = 'CalcPrecoDataResult';
               break;
           }
 

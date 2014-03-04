@@ -30,6 +30,7 @@ A versão atual destas classes está trabalhando com a versão 1.9 do webservice
 
 * **03/03/2014**: 
 * Ajustes para a versão 1.9 do manual dos Correios com a inclusão dos métodos para calcular somente o preço ou somente o prazo de forma a exibir os resultados separadamente.
+* Incluído chamada aos métodos CalcPrecoPrazoData, CalcPrecoData e CalcPrazoData, que realizam o cálculo a partir de uma database informada, podendo, em alguns casos retornar valores e/ou prazos diferentes.
 
 
 Rastreamento de encomendas

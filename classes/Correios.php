@@ -4,7 +4,7 @@
    * Classe base para os serviços dos Correios.
    * 
    * @author Ivan Wilhelm <ivan.whm@me.com>
-   * @version 1.1
+   * @version 1.2
    * @abstract
    */
   abstract class Correios
@@ -62,6 +62,9 @@
     const TIPO_CALCULO_PRECO_SO_PRECO = 'P';
     const TIPO_CALCULO_PRECO_SO_PRAZO = 'Z';
     const TIPO_CALCULO_PRECO_TODOS = 'T';
+    const TIPO_CALCULO_PRECO_SO_PRECO_COM_DATABASE = 'PD';
+    const TIPO_CALCULO_PRECO_SO_PRAZO_COM_DATABASE = 'ZD';
+    const TIPO_CALCULO_PRECO_TODOS_COM_DATABASE = 'TD';
 
     /**
      * Contém os formatos aceitos.
@@ -135,6 +138,9 @@
       self::TIPO_CALCULO_PRECO_TODOS,
       self::TIPO_CALCULO_PRECO_SO_PRECO,
       self::TIPO_CALCULO_PRECO_SO_PRAZO,
+      self::TIPO_CALCULO_PRECO_TODOS_COM_DATABASE,
+      self::TIPO_CALCULO_PRECO_SO_PRECO_COM_DATABASE,
+      self::TIPO_CALCULO_PRECO_SO_PRAZO_COM_DATABASE,
     );
 
     /**
@@ -193,7 +199,7 @@
       self::SERVICO_ESEDEX_COM_CONTRATO_GRUPO_2 => 'eSedex com contrato',
       self::SERVICO_ESEDEX_COM_CONTRATO_GRUPO_3 => 'eSedex com contrato',
     );
-    
+
     /**
      * Contém a relação de mensagens de retorno ao cliente quando ocorre algum
      * evento na entrega pelos correios.
