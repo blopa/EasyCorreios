@@ -124,6 +124,7 @@
       'LV' => 'LOGISTICA REVERSA EXPRESSA',
       'LX' => 'CARTA EXPRESSA',
       'LY' => 'CARTA EXPRESSA',
+      'LZ' => 'OBJETO INTERNACIONAL',
       'MA' => 'SERVIÇOS ADICIONAIS',
       'MB' => 'TELEGRAMA DE BALCÃO',
       'MC' => 'MALOTE CORPORATIVO',

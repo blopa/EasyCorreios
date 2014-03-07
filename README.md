@@ -67,6 +67,8 @@ informações a respeito de um objeto ou para entrada de dados externas em seus 
 
 **Histórico de alterações**
 
+* **07/03/2014**:
+* Inclusão da sigla LZ (Objeto Internacional) (Créditos ao Renato Bigliazzi)
 * **03/03/2014**:
 * Inclusão da classe CorreiosSroDados que retorna as informações relacionadas a um código de rastreamento.
 
