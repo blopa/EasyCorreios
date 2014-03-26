@@ -458,7 +458,16 @@
      */
     public function getDescricaoStatus()
     {
-      return ((isset(Correios::$statusRastreamento[$this->getStatus()])) and in_array($this->tipo, Correios::$statusRastreamento[$this->getStatus()]['tipos'])) ? Correios::$statusRastreamento[$this->getStatus()]['mensagem'] : 'Andamento normal.';
+      return isset(Correios::$statusRastreamento[$this->getStatus()][$this->tipo]) ? Correios::$statusRastreamento[$this->getStatus()][$this->tipo]['mensagem'] : 'Status desconhecido.';
+    }
+
+    /**
+     * Retorna a descrição do status do objeto.
+     * @return string
+     */
+    public function getAcaoStatus()
+    {
+      return isset(Correios::$statusRastreamento[$this->getStatus()][$this->tipo]) ? Correios::$statusRastreamento[$this->getStatus()][$this->tipo]['acao'] : 'Ação desconhecida.';
     }
 
   }

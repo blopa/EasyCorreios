@@ -50,6 +50,11 @@ A versão atual destas classes está trabalhando com a versão 1.5 do webservice
 
 **Histórico de alterações**
 
+* **26/03/2014**:
+* Inclusão dos novos tipos de eventos: BLQ, CMT, LDE e TRI na classe Correios.
+* Atualização dos status de rastreamento de acordo com nova tabela de eventos dos Correios http://www.correios.com.br/voce/acompanhar/rastreamento/atualizacaoSRO.cfm (Créditos ao Renato Bigliazzi)
+* Criação do método getAcaoStatus() no modelo CorreiosRastreamentoResultadoEvento para descrever a ação que deve ser realizada no status da encomenda.
+* Atualização do exemplo para o novo método getAcaoStatus().
 * **03/03/2014**:
 * Inclusão de tratamento para obter o primeiro evento de entrega (Créditos ao Renato Bigliazzi)
 * Inclusão de retorno de destino para eventos que possuem esta informação (Créditos ao Luiz Marcio Dias Carneiro Marques)

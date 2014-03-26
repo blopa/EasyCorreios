@@ -25,9 +25,9 @@
     //Envia os parâmetros
     $rastreamento->setTipo(Correios::TIPO_RASTREAMENTO_LISTA);
     $rastreamento->setResultado(Correios::RESULTADO_RASTREAMENTO_ULTIMO);
-    $rastreamento->addObjeto('SF214702548BR');
-    $rastreamento->addObjeto('SF214702534BR');
-    $rastreamento->addObjeto('SC463841334BR');
+//    $rastreamento->addObjeto('PG838104611BR');
+    $rastreamento->addObjeto('SF214707032BR');
+//    $rastreamento->addObjeto('PG838103664BR');
     if ($rastreamento->processaConsulta())
     {
       $retorno = $rastreamento->getRetorno();
@@ -47,7 +47,9 @@
           foreach ($resultado->getEventos() as $eventos)
           {
             echo ' - Tipo................................: ' . $eventos->getTipo() . ' - ' . $eventos->getDescricaoTipo() . PHP_EOL;
-            echo ' - Status..............................: ' . $eventos->getStatus() . ' - ' . $eventos->getDescricaoStatus() . PHP_EOL;
+            echo ' - Status..............................: ' . $eventos->getStatus() . PHP_EOL;
+            echo ' - Descrição do status.................: ' . $eventos->getDescricaoStatus() . PHP_EOL;
+            echo ' - Ação relacionada ao status..........: ' . $eventos->getAcaoStatus() . PHP_EOL;
             echo ' - Data................................: ' . $eventos->getData() . ' ' . $eventos->getHora() . PHP_EOL;
             echo ' - Descrição...........................: ' . $eventos->getDescricao() . PHP_EOL;
             echo ' - Comentários.........................: ' . $eventos->getComentario() . PHP_EOL;
