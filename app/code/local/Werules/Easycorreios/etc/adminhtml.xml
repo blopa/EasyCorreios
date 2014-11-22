@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<catalog>
+			<children>
+				<easycorreios  translate="title">
+					<!-- This is our menu configuration (display option) -->
+					<title>EasyCorreios</title>
+					<sort_order>100</sort_order>
+					<action>adminhtml/easycorreios</action>
+				</easycorreios>
+			</children>
+		</catalog>
+	</menu>
+	<acl>
+		<resources>
+			<all>
+				<title>EasyCorreios</title>
+			</all>
+			<admin>
+				<children>
+					<catalog>
+						<children>
+							<easycorreios  translate="title">
+								<!-- This is what will be displayed in the security module -->
+								<title>EasyCorreios</title>
+								<sort_order>100</sort_order>
+							</easycorreios>
+						</children>
+					</catalog>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+</config>

@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Werules_Easycorreios>
+			<version>0.0.1</version>
+		</Werules_Easycorreios>
+	</modules>
+	<global>
+		<blocks>
+			<easycorreios>
+				<class>Werules_Easycorreios_Block</class>
+			</easycorreios>
+		</blocks>
+		<models>
+			<easycorreios>
+				<class>Werules_Easycorreios_Model</class>
+			</easycorreios>
+		</models>
+		<helpers>
+			<easycorreios>
+				<class>Werules_Easycorreios_Helper</class>
+			</easycorreios>
+		</helpers>
+	</global>
+	<admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<werules_easycorreios after="Mage_Adminhtml">Werules_Easycorreios_Adminhtml</werules_easycorreios>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
+	<frontend>
+        <routers>
+            <easycorreios>
+                <use>standard</use>
+                <args>
+                    <module>Werules_Easycorreios</module>
+                    <frontName>rastrear</frontName>
+                </args>
+            </easycorreios>
+        </routers>
+		<layout> 
+			<updates>
+				<easycorreios>
+					<file>easycorreios.xml</file> 
+				</easycorreios> 
+			</updates> 
+		</layout> 
+    </frontend>
+	
+	<adminhtml>
+		<layout>
+			<updates>
+				<easycorreios>
+					<file>easycorreios.xml</file>
+				</easycorreios>
+			</updates>
+		</layout>
+	</adminhtml>
+	<crontab>
+        <jobs>
+            <werules_easycorreios_update>
+                <schedule><cron_expr>0 6 * * *</cron_expr></schedule>
+                <run><model>easycorreios/observer::atualizaCodigo</model></run>
+            </werules_easycorreios_update>
+        </jobs>
+	</crontab>
+	
+</config>

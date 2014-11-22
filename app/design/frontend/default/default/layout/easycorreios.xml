@@ -1,0 +1,8 @@
+<?xml version="1.0" ?> 
+<layout version="0.1.0"> 
+	<easycorreios_index_index> 
+		<reference name="content"> 
+			<block type="easycorreios/rastrear" name="easycorreios" template="easycorreios/view.phtml" /> 
+		</reference> 
+	</easycorreios_index_index> 
+</layout>

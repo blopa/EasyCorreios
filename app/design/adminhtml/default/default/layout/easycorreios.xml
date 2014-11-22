@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<layout version="0.1.0">
+	<adminhtml_easycorreios_index>
+		<reference name="content">
+			<block type="easycorreios/adminhtml_config" name="easycorreiosconfig" template="easycorreios/config.phtml" />
+		</reference>
+	</adminhtml_easycorreios_index>
+</layout>
