@@ -1,3 +1,82 @@
+<div class="page-title">
+	<h1><?php echo $this->__("Rastreie o seu pedido"); ?></h1>
+</div>
+
 <?php
-	echo $this->getHelloworld();
+	$textopg = "Digite o número do seu pedido abaixo para verificar o status de seu envio.";
+	$pedido = $_GET['pedido'];
+	if (!$pedido):
 ?>
+	<p><?php echo $this->__($textopg); ?></p>
+	<form name="input" action="rastrear" method="get">
+		<?php echo $this->__("Número do pedido"); ?>
+		<input type="text" name="pedido">
+		<input type="submit" value="Enviar">
+	</form>
+<?php else: ?>
+	<?php
+		$order = Mage::getModel('sales/order')->load($pedido, 'increment_id');
+		$orderId = $order->getId();
+		$result = $this->getRastreiacodigo($orderId);
+	?>
+	<?php if ($result): ?>
+		<p><?php echo $this->__("As informações abaixo são providas pelos Correios, para mais informações sobre o rastreio entre em contato."); ?></p>
+		<table style="width:100%">
+			<tr>
+			<th><?php echo $this->__("Código de rastreio"); ?></th>
+			<th><?php echo $this->__("Data e Hora"); ?></th> 
+			<th><?php echo $this->__("Local"); ?></th>
+			<th><?php echo $this->__("Situação"); ?></th>
+			</tr>
+			<?php
+				//$pedido = $_POST['pedido'];
+				//var_dump($result);
+				foreach ($result as $row)
+				{
+					//echo $row['order_num'] . '<br>';
+					//echo $row['tipo'] . '<br>';
+					//echo $row['servico'] . '<br>';
+					//echo $row['local_destino'] . '<br>';
+					//echo $row['status'] . '<br>';
+					$date = DateTime::createFromFormat('Y-m-d H:i:s', $row['atualizado_em']);
+					$horaAtu = $date->format('H:i');
+					$dataAtu = $date->format('d/m/Y'); 
+					//echo "<br>";
+					echo '<tr>';
+						echo '<td><a href="http://websro.correios.com.br/sro_bin/txect01$.QueryList?P_LINGUA=001&P_TIPO=001&P_COD_UNI=' . $row['tracking_num'] . '" target="blank">' . $row['tracking_num'] . '</a></td>';
+						echo '<td>' . $dataAtu . ' as ' . $horaAtu . '</td>';
+						echo '<td>' . $row['local_evento'] . '</td>';
+						echo '<td>' . $row['descricao'] . '</td>';
+					echo '</tr>';
+				}
+			?>
+		</table>
+	<?php else: ?>
+		<ul class="messages">
+			<li class="error-msg">
+				<ul>
+					<li>
+						<span>
+							<?php
+								echo $this->__("O código do pedido que você digitou não consta em nosso sistema ou seu pedido ainda não foi enviado. Acesse");
+								echo ' <a href="' . $this->getUrl('customer/account/') . '">'; 
+								echo $this->__("sua conta");
+								echo "</a>";
+								echo $this->__(" para ver o histórico de pedidos ou");
+								echo ' <a href="' . $this->getUrl('contacts') . '">';
+								echo $this->__("entre em contato");
+								echo "</a>.";
+							?>
+						</span>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<p><?php echo $this->__($textopg); ?></p>
+		<form name="input" action="rastrear" method="get">
+			<?php echo $this->__("Número do pedido"); ?>
+			<input type="text" name="pedido">
+			<input type="submit" value="Enviar">
+		</form>
+	<?php endif; ?>
+<?php endif; ?>
