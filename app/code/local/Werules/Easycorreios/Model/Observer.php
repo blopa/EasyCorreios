@@ -52,6 +52,7 @@ class Werules_Easycorreios_Model_Observer
 				}
 			}
 		}
+		$this->completaPedido();
 		$result = $conn->fetchAll("SELECT * FROM wr_easycorreios WHERE situacao='recente'");
 		if($result){
 			foreach ($result as $row) {
@@ -61,18 +62,19 @@ class Werules_Easycorreios_Model_Observer
 					$dataBusca = $resultado['data'] . " " . $resultado['hora'];
 					$ordem = (int)$row['ordem'];
 					$ordem++;
-					if(($resultado['tipo'] != $row['tipo']) || ($resultado['status'] != $row['status']) || ($dataBusca != $dataBanco)){ // verificando se houve alguma mudanca no rastreamento
+					if(($resultado['tipo'] != $row['tipo']) || ($resultado['status'] != $row['status']) || ($dataBusca != $dataBanco)) // verificando se houve alguma mudanca no rastreamento
+					{
 						$dataBusca = $dataBusca . ":00";
 						$dataBusca = str_replace('/', '-', $dataBusca);
 						$dataBusca = date('Y-m-d H:i:s', strtotime($dataBusca));
 						$situacao = "recente";
-						if($resultado['tipo'] == "BDE" || $resultado['tipo'] == "BDI" || $resultado['tipo'] == "BDR" && $resultado['status'] == "1"){ // pedido foi entregue
+						/*if($resultado['tipo'] == "BDE" || $resultado['tipo'] == "BDI" || $resultado['tipo'] == "BDR" && $resultado['status'] == "1"){ // pedido foi entregue
 							$situacao = "entregue";
 							$order = Mage::getModel('sales/order')->load($row['order_num']);
 							$order->setData('state', Mage_Sales_Model_Order::STATE_COMPLETE);
 							$order->setStatus("complete");
 							$order->save();
-						}
+						}*/
 						$conn = Mage::getSingleton('core/resource')->getConnection('core_write');
 						$conn->query("UPDATE wr_easycorreios SET situacao='antiga' WHERE easycorreios_id=" . $row['easycorreios_id'] . "");
 						$conn->query
@@ -107,6 +109,28 @@ class Werules_Easycorreios_Model_Observer
 			}
 		}
     }
+	
+	public function completaPedido()
+	{
+		$conn = Mage::getSingleton('core/resource')->getConnection('core_read');
+		$result = $conn->fetchAll("SELECT * FROM wr_easycorreios WHERE situacao='recente' AND status='1' AND (tipo='BDE' OR tipo='BDI' OR tipo='BDR')");
+		foreach ($result as $row)
+		{
+			try
+			{
+				$conn = Mage::getSingleton('core/resource')->getConnection('core_write');
+				$conn->query("UPDATE wr_easycorreios SET situacao='entregue' WHERE easycorreios_id=" . $row['easycorreios_id'] . "");
+				$order = Mage::getModel('sales/order')->load($row['order_num']);
+				$order->setData('state', Mage_Sales_Model_Order::STATE_COMPLETE);
+				$order->setStatus("complete");
+				$order->save();
+			}
+			catch (Exception $e)
+			{
+				return false;
+			}
+		}
+	}
 	
 	public function rastreiaCodigo($codigo){
 	try

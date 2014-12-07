@@ -16,6 +16,27 @@
 				<class>Werules_Easycorreios_Model</class>
 			</easycorreios>
 		</models>
+		<resources>
+		  <easycorreios_setup>
+			<setup>
+			  <module>Werules_Easycorreios</module>
+			  <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
+			</setup>
+			<connection>
+			  <use>core_setup</use>
+			</connection>
+		  </easycorreios_setup>
+		  <categoryattribute1379261918_write>
+			<connection>
+			  <use>core_write</use>
+			</connection>
+		  </categoryattribute1379261918_write>
+		  <categoryattribute1379261918_read>
+			<connection>
+			  <use>core_read</use>
+			</connection>
+		  </categoryattribute1379261918_read>
+		</resources>
 		<helpers>
 			<easycorreios>
 				<class>Werules_Easycorreios_Helper</class>
