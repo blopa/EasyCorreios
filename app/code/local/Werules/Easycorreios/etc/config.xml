@@ -20,22 +20,21 @@
 		  <easycorreios_setup>
 			<setup>
 			  <module>Werules_Easycorreios</module>
-			  <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
 			</setup>
 			<connection>
 			  <use>core_setup</use>
 			</connection>
 		  </easycorreios_setup>
-		  <categoryattribute1379261918_write>
+		  <easycorreios_write>
 			<connection>
 			  <use>core_write</use>
 			</connection>
-		  </categoryattribute1379261918_write>
-		  <categoryattribute1379261918_read>
+		  </easycorreios_write>
+		  <easycorreios_read>
 			<connection>
 			  <use>core_read</use>
 			</connection>
-		  </categoryattribute1379261918_read>
+		  </easycorreios_read>
 		</resources>
 		<helpers>
 			<easycorreios>
