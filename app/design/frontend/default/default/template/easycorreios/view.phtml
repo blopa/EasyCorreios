@@ -15,13 +15,13 @@
 	</form>
 <?php else: ?>
 	<?php
-		$order = Mage::getModel('sales/order')->load($pedido, 'increment_id');
-		$orderId = $order->getId();
-		$result = $this->getRastreiacodigo($orderId);
+		$order = Mage::getModel('sales/order')->load($pedido, 'increment_id'); // carrega as informacoes do pedido
+		$orderId = $order->getId(); // pega a ID do pedido digitado pelo cliente
+		$result = $this->getRastreiacodigo($orderId); // chama a funcao que vai buscar os dados de rastreio no banco de dados
 	?>
-	<?php if ($result): ?>
+	<?php if ($result): ?> <!-- caso a busca pelo pedido enviado nao seja vazia -->
 		<p><?php echo $this->__("As informações abaixo são providas pelos Correios, para mais informações sobre o rastreio entre em contato."); ?></p>
-		<table style="width:100%">
+		<table style="width:100%"> <!-- tabela que vai exibir os dados do rastreamento do pedido -->
 			<tr>
 			<th><?php echo $this->__("Código de rastreio"); ?></th>
 			<th><?php echo $this->__("Data e Hora"); ?></th> 
@@ -38,9 +38,9 @@
 					//echo $row['servico'] . '<br>';
 					//echo $row['local_destino'] . '<br>';
 					//echo $row['status'] . '<br>';
-					$date = DateTime::createFromFormat('Y-m-d H:i:s', $row['atualizado_em']);
-					$horaAtu = $date->format('H:i');
-					$dataAtu = $date->format('d/m/Y'); 
+					$date = DateTime::createFromFormat('Y-m-d H:i:s', $row['atualizado_em']); // carrega a data do banco de dados
+					$horaAtu = $date->format('H:i'); // pega soh a hora da data
+					$dataAtu = $date->format('d/m/Y'); // pega soh o dia/mes/ano da data
 					//echo "<br>";
 					echo '<tr>';
 						echo '<td><a href="http://websro.correios.com.br/sro_bin/txect01$.QueryList?P_LINGUA=001&P_TIPO=001&P_COD_UNI=' . $row['tracking_num'] . '" target="blank">' . $row['tracking_num'] . '</a></td>';
@@ -51,7 +51,7 @@
 				}
 			?>
 		</table>
-	<?php else: ?>
+	<?php else: ?> <!-- caso nao exista o pedido ou o pedido ainda nao foi enviado -->
 		<ul class="messages">
 			<li class="error-msg">
 				<ul>
@@ -71,7 +71,7 @@
 					</li>
 				</ul>
 			</li>
-		</ul>
+		</ul> <!-- exibe novamente o form para digitar o pedido -->
 		<p><?php echo $this->__($textopg); ?></p>
 		<form name="input" action="rastrear" method="get">
 			<?php echo $this->__("Número do pedido"); ?>
